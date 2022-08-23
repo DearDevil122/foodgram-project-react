@@ -6,13 +6,20 @@ from api.models import Recipe
 from api.serializers import RecipeToRepresentationSerializer
 
 
-def post_delete_favorite_shopping_cart(request, model, id):
-    user = request.user
+def post_delete_favorite_shopping_cart(user, method, model, id):
     recipe = get_object_or_404(Recipe, id=id)
-    if request.method == 'POST':
+    if method == 'POST':
         model.objects.create(user=user, recipe=recipe)
         serializer = RecipeToRepresentationSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     obj = get_object_or_404(model, user=user, recipe=recipe)
     obj.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def recipe_formation(ingredients):
+    return '\n'.join([
+        f'{ingredient["ingredient__name"]} - {ingredient["sum_amount"]}'
+        f'{ingredient["ingredient__measurement_unit"]}'
+        for ingredient in ingredients
+    ])

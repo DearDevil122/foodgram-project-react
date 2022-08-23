@@ -1,4 +1,7 @@
 import csv
+import logging
+from logging import StreamHandler
+import sys
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
@@ -6,9 +9,13 @@ from django.db.utils import IntegrityError
 from api.models import Ingredient
 
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
+
 class Command(BaseCommand):
     """
-    Скрипт для загрузки базы ингридиетов в проект.
+    Скрипт для загрузки базы ингридиентов в проект.
     """
     help = 'loading ingredients from data in json'
 
@@ -25,7 +32,7 @@ class Command(BaseCommand):
                             measurement_unit=measurement_unit
                         )
                     except IntegrityError:
-                        print(f'Ингредиент {name} {measurement_unit} '
-                              f'уже есть в базе')
+                        logger.error(f'Ингредиент {name} {measurement_unit} '
+                                     f'уже есть в базе!')
         except FileNotFoundError:
             raise CommandError('Файл отсутствует в директории data')

@@ -8,6 +8,7 @@ class User(AbstractUser):
     """
     Формирование полей для модели User.
     """
+
     email = models.EmailField(
         max_length=254,
         unique=True,
@@ -52,6 +53,7 @@ class Follow(models.Model):
     """
     Формирование полей для модели Follow.
     """
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

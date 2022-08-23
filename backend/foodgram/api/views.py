@@ -7,13 +7,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from api.filters import IngredientFilter, RecipeFilter
-from api.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
-                        ShoppingCart, Tag)
+from api.models import (
+    Favorite, Ingredient, IngredientRecipe, Recipe, ShoppingCart, Tag
+)
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrAdminOrReadOnly
-from api.serializers import (IngredientSerializer, RecipesReadSerializer,
-                             RecipesWriteSerializer, TagSerializer)
-from api.utils import post_delete_favorite_shopping_cart
+from api.serializers import (
+    IngredientSerializer, RecipesReadSerializer, RecipesWriteSerializer,
+    TagSerializer
+)
+from api.utils import post_delete_favorite_shopping_cart, recipe_formation
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -43,29 +46,33 @@ class RecipesViewSet(ModelViewSet):
 
     @action(
         detail=False,
-        methods=['post', 'delete'],
+        methods=('post', 'delete'),
         url_path=r'(?P<id>[\d]+)/favorite',
         url_name='favorite',
         pagination_class=None,
         permission_classes=[IsAuthenticated]
     )
     def favorite(self, request, id):
-        return post_delete_favorite_shopping_cart(request, Favorite, id)
+        return post_delete_favorite_shopping_cart(
+            request.user, request.method, Favorite, id
+        )
 
     @action(
         detail=False,
-        methods=['post', 'delete'],
+        methods=('post', 'delete'),
         url_path=r'(?P<id>[\d]+)/shopping_cart',
         url_name='shopping_cart',
         pagination_class=None,
         permission_classes=[IsAuthenticated]
     )
     def shopping_cart(self, request, id):
-        return post_delete_favorite_shopping_cart(request, ShoppingCart, id)
+        return post_delete_favorite_shopping_cart(
+            request.user, request.method, ShoppingCart, id
+        )
 
     @action(
         detail=False,
-        methods=['get'],
+        methods=('get',),
         url_path='download_shopping_cart',
         url_name='download_shopping_cart',
         pagination_class=None,
@@ -81,11 +88,7 @@ class RecipesViewSet(ModelViewSet):
             'ingredient__name',
             'ingredient__measurement_unit',
         ).annotate(sum_amount=Sum('amount'))
-        shopping_cart = '\n'.join([
-            f'{ingredient["ingredient__name"]} - {ingredient["sum_amount"]}'
-            f'{ingredient["ingredient__measurement_unit"]}'
-            for ingredient in ingredients
-        ])
+        shopping_cart = recipe_formation(ingredients)
         filename = 'shopping_cart.pdf'
         response = FileResponse(shopping_cart, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename={filename}'

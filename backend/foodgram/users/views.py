@@ -41,11 +41,12 @@ class CustomUserViewSet(UserViewSet):
         return Response(serializer.data)
 
     @action(
-        methods=['post', 'delete'],
+        methods=('post', 'delete'),
         detail=True,
+        url_path='subscribe',
         permission_classes=[IsAuthenticated]
     )
-    def subscribe(self, request, id):
+    def subscription_actions(self, request, id):
         user = request.user
         if request.method == 'POST':
             data = {'user': user.id, 'author': id}
