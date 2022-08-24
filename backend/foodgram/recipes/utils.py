@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 
-from api.models import Recipe
-from api.serializers import RecipeToRepresentationSerializer
+from recipes.models import Recipe
+from recipes.serializers import RecipeToRepresentationSerializer
 
 
 def post_delete_favorite_shopping_cart(user, method, model, id):

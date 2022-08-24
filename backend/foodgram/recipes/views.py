@@ -6,17 +6,17 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from api.filters import IngredientFilter, RecipeFilter
-from api.models import (
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.models import (
     Favorite, Ingredient, IngredientRecipe, Recipe, ShoppingCart, Tag
 )
-from api.pagination import CustomPagination
-from api.permissions import IsAuthorOrAdminOrReadOnly
-from api.serializers import (
+from recipes.pagination import CustomPagination
+from recipes.permissions import IsAuthorOrAdminOrReadOnly
+from recipes.serializers import (
     IngredientSerializer, RecipesReadSerializer, RecipesWriteSerializer,
     TagSerializer
 )
-from api.utils import post_delete_favorite_shopping_cart, recipe_formation
+from recipes.utils import post_delete_favorite_shopping_cart, recipe_formation
 
 
 class TagsViewSet(ReadOnlyModelViewSet):

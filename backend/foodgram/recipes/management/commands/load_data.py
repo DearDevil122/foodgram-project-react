@@ -1,12 +1,10 @@
 import csv
 import logging
-from logging import StreamHandler
-import sys
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from api.models import Ingredient
+from recipes.models import Ingredient
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            with open('api/data/ingredients.csv', 'r',
+            with open('recipes/data/ingredients.csv', 'r',
                       encoding='utf-8') as file:
                 file_reader = csv.reader(file)
                 for row in file_reader:
