@@ -10,7 +10,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         'username',
         'first_name',
         'last_name',
-        'password',
+#        'password',
     )
     search_fields = (
         'username',
