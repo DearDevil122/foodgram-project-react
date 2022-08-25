@@ -89,12 +89,14 @@ class RecipesViewSet(ModelViewSet):
 #        response = HttpResponse(shopping_cart, content_type='text/plain')
 #        response['Content-Disposition'] = f'attachment; filename={filename}'
 #        return response
-#        filename = 'shopping_cart.pdf'
+        filename = 'shopping_cart.pdf'
 #        response = FileResponse(shopping_cart, content_type='application/pdf')
 #        response['Content-Disposition'] = f'attachment; filename={filename}'
-        return FileResponse(
+        response = FileResponse(
             shopping_cart,
             as_attachment=True,
             content_type='application/pdf',
             filename='shopping_cart.pdf'
         )
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
