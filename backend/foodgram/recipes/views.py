@@ -1,22 +1,18 @@
 from django.db.models import Sum
-from django.http import HttpResponse, FileResponse
+from django.http import FileResponse, HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
+                            ShoppingCart, Tag)
+from recipes.pagination import CustomPagination
+from recipes.permissions import IsAuthorOrAdminOrReadOnly
+from recipes.serializers import (IngredientSerializer, RecipesReadSerializer,
+                                 RecipesWriteSerializer, TagSerializer)
+from recipes.utils import post_delete_favorite_shopping_cart, recipe_formation
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-
-from recipes.filters import IngredientFilter, RecipeFilter
-from recipes.models import (
-    Favorite, Ingredient, IngredientRecipe, Recipe, ShoppingCart, Tag
-)
-from recipes.pagination import CustomPagination
-from recipes.permissions import IsAuthorOrAdminOrReadOnly
-from recipes.serializers import (
-    IngredientSerializer, RecipesReadSerializer, RecipesWriteSerializer,
-    TagSerializer
-)
-from recipes.utils import post_delete_favorite_shopping_cart, recipe_formation
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
