@@ -1,5 +1,5 @@
 from django.db.models import Sum
-from django.http import FileResponse
+from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
@@ -85,11 +85,16 @@ class RecipesViewSet(ModelViewSet):
             'ingredient__measurement_unit',
         ).annotate(sum_amount=Sum('amount'))
         shopping_cart = recipe_formation(ingredients)
+        filename = 'shopping_cart.txt'
+        response = HttpResponse(shopping_cart, content_type='text/plain')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
+
 #        filename = 'shopping_cart.pdf'
 #        response = FileResponse(shopping_cart, content_type='application/pdf')
 #        response['Content-Disposition'] = f'attachment; filename={filename}'
-        return FileResponse(
-            shopping_cart,
-            as_attachment=True,
-            filename='shopping_cart.pdf'
-        )
+#        return FileResponse(
+#            shopping_cart,
+#            as_attachment=True,
+#            filename='shopping_cart.pdf'
+#        )
