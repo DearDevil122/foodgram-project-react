@@ -90,6 +90,7 @@ class RecipesViewSet(ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={filename}'
         return response
 
+
 #        filename = 'shopping_cart.pdf'
 #        response = FileResponse(shopping_cart, content_type='application/pdf')
 #        response['Content-Disposition'] = f'attachment; filename={filename}'
