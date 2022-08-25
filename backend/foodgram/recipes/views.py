@@ -95,5 +95,6 @@ class RecipesViewSet(ModelViewSet):
         return FileResponse(
             shopping_cart,
             as_attachment=True,
+            content_type='application/pdf',
             filename='shopping_cart.pdf'
         )
