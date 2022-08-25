@@ -5,6 +5,7 @@ from .models import Follow, User
 
 @admin.register(User)
 class CustomUserAdmin(admin.ModelAdmin):
+    exclude = ('password',)
     list_display = (
         'email',
         'username',
