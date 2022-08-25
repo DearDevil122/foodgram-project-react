@@ -48,6 +48,10 @@ class Tag(models.Model):
         verbose_name='Слаг'
     )
 
+    class Meta:
+        verbose_name = 'Тэг'
+        verbose_name_plural = 'Тэги'
+
     def __str__(self):
         return f'{self.name} {self.slug}'
 
