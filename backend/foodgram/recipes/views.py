@@ -85,7 +85,11 @@ class RecipesViewSet(ModelViewSet):
             'ingredient__measurement_unit',
         ).annotate(sum_amount=Sum('amount'))
         shopping_cart = recipe_formation(ingredients)
-        filename = 'shopping_cart.pdf'
-        response = FileResponse(shopping_cart, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename={filename}'
-        return response
+#        filename = 'shopping_cart.pdf'
+#        response = FileResponse(shopping_cart, content_type='application/pdf')
+#        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return FileResponse(
+            shopping_cart,
+            as_attachment=True,
+            filename='shopping_cart.pdf'
+        )
