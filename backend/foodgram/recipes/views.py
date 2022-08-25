@@ -1,5 +1,5 @@
 from django.db.models import Sum
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
